@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
+import { addContactToAPI } from '../../contactsApi/contactsApi';
 import { StyledContactForm } from './ContactForm.styled';
 
 function ContactForm() {
@@ -30,13 +30,18 @@ function ContactForm() {
       return;
     }
 
-    const id = Date.now();
-
-    dispatch(addContact({ id, name, number }));
-    setName('');
-    setNumber('');
-    setError('');
-    setSuccess('Contact added successfully.');
+    dispatch(addContactToAPI({ name, number }))
+      .unwrap()
+      .then(() => {
+        setName('');
+        setNumber('');
+        setError('');
+        setSuccess('Contact added successfully.');
+      })
+      .catch((error) => {
+        setError(`Error adding contact: ${error.message}`);
+        setSuccess('');
+      });
   };
 
   return (

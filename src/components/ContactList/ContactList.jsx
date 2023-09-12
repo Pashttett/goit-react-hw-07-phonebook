@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContactByName } from '../../redux/contactsSlice';
+import { deleteContactByName } from '../../contactsApi/contactsApi';
 import { ContactListContainer, ContactListItem, DeleteButton } from './ContactList.styled';
 
 function ContactList() {
@@ -18,7 +18,7 @@ function ContactList() {
         await dispatch(deleteContactByName(name)).unwrap();
         console.log(`Contact with name ${name} has been deleted.`);
       } catch (error) {
-        console.error('Error deleting contact:', error);
+        console.error(`Error deleting contact: ${error.message}`);
       }
     } else {
       console.error('Invalid contact name');
